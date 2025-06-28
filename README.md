@@ -43,7 +43,7 @@ portfolio/
 
 - Python 3.x
 - Flask
-- 
+  
 🧑‍💻 Contact me:
 
 Padam Venkatesh
