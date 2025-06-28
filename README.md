@@ -11,15 +11,25 @@ This project includes a homepage with a profile image, a project listing page, a
 ## 📂 Project Structure
 
 portfolio/
+
 ├── static/
+
 │ ├── style.css
+
 │ └── me.jpg
+
 ├── templates/
+
 │ ├── index.html
+
 │ ├── projects.html
+
 │ └── contact.html
+
 ├── app.py
+
 └── README.md
+
 ## 🚀 Features
 
 - 🏠 Home page with photo and introduction
