@@ -43,7 +43,11 @@ portfolio/
 
 - Python 3.x
 - Flask
-🧑‍💻 Author
-Your Name
+- 
+🧑‍💻 Contact me:
+
+Padam Venkatesh
+
 venkateshpadam69@gmail.com
+
 https://github.com/VenkateshPadam
