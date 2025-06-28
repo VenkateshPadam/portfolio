@@ -1,0 +1,18 @@
+body {
+  background-color: black;
+  color: white; /* Ensures text is readable */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+
+h1 {
+    color: #0e1216;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #030f1b;
+}
