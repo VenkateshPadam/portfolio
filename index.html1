@@ -1,0 +1,842 @@
+!DOCTYPE html
+html lang=en
+head
+    meta charset=UTF-8
+    meta name=viewport content=width=device-width, initial-scale=1.0
+    titleVenkatesh Padam  Computer Science Portfoliotitle
+    !-- Fonts & Icons --
+    link href=httpsfonts.googleapis.comcss2family=Plus+Jakarta+Sanswght@300;400;500;600;700;800&family=Fira+Codewght@400;500;600&display=swap rel=stylesheet
+    link rel=stylesheet href=httpscdnjs.cloudflare.comajaxlibsfont-awesome6.4.0cssall.min.css
+
+    style
+        root {
+            --bg-dark #0a0c10;
+            --bg-card rgba(18, 22, 31, 0.75);
+            --bg-card-hover rgba(28, 35, 49, 0.85);
+            --primary #6366f1;
+            --primary-glow rgba(99, 102, 241, 0.35);
+            --secondary #06b6d4;
+            --accent #a855f7;
+            --text-main #f3f4f6;
+            --text-muted #9ca3af;
+            --border-color rgba(255, 255, 255, 0.08);
+            --border-highlight rgba(99, 102, 241, 0.4);
+            --font-sans 'Plus Jakarta Sans', sans-serif;
+            --font-mono 'Fira Code', monospace;
+        }
+
+         {
+            margin 0;
+            padding 0;
+            box-sizing border-box;
+            scroll-behavior smooth;
+        }
+
+        body {
+            background-color var(--bg-dark);
+            color var(--text-main);
+            font-family var(--font-sans);
+            overflow-x hidden;
+            line-height 1.6;
+        }
+
+         --- Canvas & Ambient Glows --- 
+        #bg-canvas {
+            position fixed;
+            top 0;
+            left 0;
+            width 100vw;
+            height 100vh;
+            z-index -2;
+            pointer-events none;
+        }
+
+        .glow-orb {
+            position fixed;
+            border-radius 50%;
+            filter blur(120px);
+            z-index -1;
+            opacity 0.25;
+            animation float 18s ease-in-out infinite alternate;
+            pointer-events none;
+        }
+
+        .glow-1 {
+            width 450px;
+            height 450px;
+            background var(--primary);
+            top -100px;
+            left -100px;
+        }
+
+        .glow-2 {
+            width 500px;
+            height 500px;
+            background var(--accent);
+            bottom -150px;
+            right -100px;
+            animation-delay -9s;
+        }
+
+        @keyframes float {
+            0% { transform translate(0, 0) scale(1); }
+            50% { transform translate(60px, 80px) scale(1.1); }
+            100% { transform translate(-40px, 40px) scale(0.95); }
+        }
+
+         --- Header  Navigation --- 
+        header {
+            position fixed;
+            top 0;
+            width 100%;
+            padding 1.2rem 8%;
+            display flex;
+            justify-content space-between;
+            align-items center;
+            z-index 1000;
+            background rgba(10, 12, 16, 0.85);
+            backdrop-filter blur(12px);
+            border-bottom 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size 1.4rem;
+            font-weight 800;
+            color var(--text-main);
+            text-decoration none;
+            font-family var(--font-mono);
+        }
+
+        .logo span { color var(--primary); }
+
+        .nav-links {
+            display flex;
+            gap 2rem;
+            list-style none;
+            align-items center;
+        }
+
+        .nav-links a {
+            color var(--text-muted);
+            text-decoration none;
+            font-weight 500;
+            font-size 0.95rem;
+            transition color 0.3s ease;
+        }
+
+        .nav-links ahover { color var(--text-main); }
+
+        .btn-nav {
+            padding 0.5rem 1.2rem;
+            border-radius 8px;
+            background rgba(99, 102, 241, 0.1);
+            border 1px solid var(--border-highlight);
+            color #a5b4fc !important;
+            transition all 0.3s ease;
+        }
+
+        .btn-navhover {
+            background var(--primary);
+            color #fff !important;
+            box-shadow 0 0 20px var(--primary-glow);
+        }
+
+         --- Global Layout --- 
+        section {
+            padding 7rem 8% 4rem;
+            max-width 1300px;
+            margin 0 auto;
+        }
+
+        .section-title {
+            font-size 2.2rem;
+            font-weight 700;
+            margin-bottom 3rem;
+            position relative;
+            display inline-block;
+        }
+
+        .section-titleafter {
+            content '';
+            position absolute;
+            bottom -8px;
+            left 0;
+            width 50%;
+            height 3px;
+            background linear-gradient(90deg, var(--primary), transparent);
+            border-radius 2px;
+        }
+
+         --- Hero Section --- 
+        .hero {
+            min-height 90vh;
+            display flex;
+            align-items center;
+            justify-content space-between;
+            gap 2rem;
+            padding-top 8rem;
+        }
+
+        .hero-content { max-width 650px; }
+
+        .badge {
+            display inline-flex;
+            align-items center;
+            gap 0.5rem;
+            padding 0.4rem 1rem;
+            background rgba(99, 102, 241, 0.1);
+            border 1px solid var(--border-highlight);
+            border-radius 30px;
+            color #a5b4fc;
+            font-size 0.85rem;
+            font-family var(--font-mono);
+            margin-bottom 1.5rem;
+        }
+
+        .badge-dot {
+            width 8px;
+            height 8px;
+            background #22c55e;
+            border-radius 50%;
+            box-shadow 0 0 10px #22c55e;
+        }
+
+        .hero h1 {
+            font-size 3.5rem;
+            font-weight 800;
+            line-height 1.1;
+            margin-bottom 1rem;
+            letter-spacing -1px;
+        }
+
+        .gradient-text {
+            background linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, var(--primary) 100%);
+            -webkit-background-clip text;
+            -webkit-text-fill-color transparent;
+        }
+
+        .hero p {
+            font-size 1.15rem;
+            color var(--text-muted);
+            margin-bottom 2rem;
+        }
+
+        .hero-btns {
+            display flex;
+            gap 1rem;
+            align-items center;
+        }
+
+        .btn-primary {
+            padding 0.8rem 1.8rem;
+            background var(--primary);
+            color #fff;
+            border none;
+            border-radius 8px;
+            font-weight 600;
+            text-decoration none;
+            display inline-flex;
+            align-items center;
+            gap 0.5rem;
+            transition all 0.3s ease;
+            box-shadow 0 4px 20px var(--primary-glow);
+        }
+
+        .btn-primaryhover {
+            transform translateY(-2px);
+            box-shadow 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary {
+            padding 0.8rem 1.8rem;
+            background transparent;
+            color var(--text-main);
+            border 1px solid var(--border-color);
+            border-radius 8px;
+            font-weight 600;
+            text-decoration none;
+            transition all 0.3s ease;
+        }
+
+        .btn-secondaryhover {
+            border-color var(--text-muted);
+            background rgba(255, 255, 255, 0.03);
+        }
+
+         Hero Code Box 
+        .hero-graphic {
+            flex 1;
+            max-width 480px;
+            background var(--bg-card);
+            border 1px solid var(--border-color);
+            border-radius 12px;
+            padding 1.5rem;
+            box-shadow 0 20px 40px rgba(0,0,0,0.4);
+            backdrop-filter blur(10px);
+            font-family var(--font-mono);
+            font-size 0.85rem;
+        }
+
+        .window-header {
+            display flex;
+            gap 6px;
+            margin-bottom 1rem;
+        }
+
+        .dot { width 12px; height 12px; border-radius 50%; }
+        .dot-red { background #ef4444; }
+        .dot-yellow { background #f59e0b; }
+        .dot-green { background #10b981; }
+
+        .code-keyword { color #c084fc; }
+        .code-var { color #f472b6; }
+        .code-string { color #34d399; }
+        .code-func { color #60a5fa; }
+
+         --- Featured Project --- 
+        .featured-project {
+            background linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border 1px solid var(--border-highlight);
+            border-radius 16px;
+            padding 2.5rem;
+            display grid;
+            grid-template-columns 1fr 1fr;
+            gap 2.5rem;
+            align-items center;
+            margin-bottom 3rem;
+            backdrop-filter blur(10px);
+            position relative;
+            overflow hidden;
+        }
+
+        .featured-tag {
+            position absolute;
+            top 15px;
+            right -35px;
+            background var(--primary);
+            color #fff;
+            padding 4px 40px;
+            font-size 0.75rem;
+            font-weight 700;
+            text-transform uppercase;
+            transform rotate(45deg);
+        }
+
+        .featured-info h3 {
+            font-size 1.8rem;
+            margin-bottom 0.8rem;
+        }
+
+        .featured-info p {
+            color var(--text-muted);
+            margin-bottom 1.5rem;
+        }
+
+        .tech-tags {
+            display flex;
+            flex-wrap wrap;
+            gap 0.5rem;
+            margin-bottom 1.5rem;
+        }
+
+        .tag {
+            padding 0.3rem 0.8rem;
+            background rgba(255,255,255,0.05);
+            border 1px solid var(--border-color);
+            border-radius 6px;
+            font-size 0.8rem;
+            color #d1d5db;
+            font-family var(--font-mono);
+        }
+
+        .project-preview-card {
+            background #0d1117;
+            border 1px solid var(--border-color);
+            border-radius 12px;
+            padding 1.5rem;
+            display flex;
+            flex-direction column;
+            gap 1rem;
+            text-align center;
+        }
+
+        .node-graph-mock {
+            height 180px;
+            border 1px dashed var(--border-color);
+            border-radius 8px;
+            display flex;
+            justify-content center;
+            align-items center;
+            background radial-gradient(circle at center, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        }
+
+         --- Projects Grid --- 
+        .projects-grid {
+            display grid;
+            grid-template-columns repeat(auto-fit, minmax(300px, 1fr));
+            gap 1.8rem;
+        }
+
+        .card {
+            background var(--bg-card);
+            border 1px solid var(--border-color);
+            border-radius 12px;
+            padding 1.8rem;
+            transition all 0.3s ease;
+            backdrop-filter blur(10px);
+            display flex;
+            flex-direction column;
+            justify-content space-between;
+        }
+
+        .cardhover {
+            transform translateY(-5px);
+            border-color var(--border-highlight);
+            background var(--bg-card-hover);
+        }
+
+        .card-header {
+            display flex;
+            justify-content space-between;
+            align-items center;
+            margin-bottom 1rem;
+        }
+
+        .card-icon {
+            font-size 1.5rem;
+            color var(--primary);
+        }
+
+        .card-links a {
+            color var(--text-muted);
+            font-size 1.1rem;
+            margin-left 0.8rem;
+            transition color 0.3s;
+        }
+
+        .card-links ahover { color var(--text-main); }
+
+        .card h4 {
+            font-size 1.25rem;
+            margin-bottom 0.5rem;
+        }
+
+        .card p {
+            color var(--text-muted);
+            font-size 0.92rem;
+            margin-bottom 1.2rem;
+        }
+
+         --- Skills Section --- 
+        .skills-grid {
+            display grid;
+            grid-template-columns repeat(auto-fit, minmax(220px, 1fr));
+            gap 1.5rem;
+        }
+
+        .skill-category {
+            background var(--bg-card);
+            border 1px solid var(--border-color);
+            border-radius 12px;
+            padding 1.5rem;
+        }
+
+        .skill-category h4 {
+            font-size 1.1rem;
+            margin-bottom 1rem;
+            color var(--primary);
+            display flex;
+            align-items center;
+            gap 0.5rem;
+        }
+
+        .skill-list {
+            list-style none;
+            display flex;
+            flex-direction column;
+            gap 0.6rem;
+        }
+
+        .skill-item {
+            color var(--text-muted);
+            font-size 0.95rem;
+            display flex;
+            align-items center;
+            gap 0.5rem;
+        }
+
+        .skill-itembefore {
+            content '▹';
+            color var(--secondary);
+        }
+
+         --- Timeline --- 
+        .timeline {
+            position relative;
+            border-left 2px solid var(--border-color);
+            padding-left 2rem;
+            margin-left 1rem;
+        }
+
+        .timeline-item {
+            position relative;
+            margin-bottom 2.5rem;
+        }
+
+        .timeline-itembefore {
+            content '';
+            position absolute;
+            left -2.55rem;
+            top 5px;
+            width 12px;
+            height 12px;
+            border-radius 50%;
+            background var(--primary);
+            box-shadow 0 0 10px var(--primary);
+        }
+
+        .timeline-date {
+            font-family var(--font-mono);
+            font-size 0.85rem;
+            color var(--secondary);
+            margin-bottom 0.3rem;
+        }
+
+        .timeline-title {
+            font-size 1.2rem;
+            font-weight 600;
+        }
+
+        .timeline-subtitle {
+            color var(--text-muted);
+            font-size 0.95rem;
+            margin-bottom 0.5rem;
+        }
+
+         --- Footer --- 
+        footer {
+            border-top 1px solid var(--border-color);
+            padding 3rem 8%;
+            text-align center;
+            color var(--text-muted);
+            font-size 0.9rem;
+            background rgba(10, 12, 16, 0.9);
+        }
+
+        .social-links {
+            display flex;
+            justify-content center;
+            gap 1.5rem;
+            margin-bottom 1.5rem;
+        }
+
+        .social-links a {
+            color var(--text-muted);
+            font-size 1.4rem;
+            transition all 0.3s;
+        }
+
+        .social-links ahover {
+            color var(--primary);
+            transform translateY(-3px);
+        }
+
+         Responsive 
+        @media (max-width 900px) {
+            .hero {
+                flex-direction column;
+                text-align center;
+            }
+            .hero-content { max-width 100%; }
+            .hero-btns { justify-content center; }
+            .featured-project { grid-template-columns 1fr; }
+            .nav-links { display none; }
+        }
+    style
+head
+body
+
+    !-- Background Canvas & Glow Orbs --
+    canvas id=bg-canvascanvas
+    div class=glow-orb glow-1div
+    div class=glow-orb glow-2div
+
+    !-- Navigation Bar --
+    header
+        a href=# class=logo&lt;spanVenkateshPadamspan &gt;a
+        ul class=nav-links
+            lia href=#aboutAboutali
+            lia href=#projectsProjectsali
+            lia href=#skillsSkillsali
+            lia href=#timelineEducationali
+            lia href=#contact class=btn-navContactali
+        ul
+    header
+
+    !-- Hero Section --
+    section class=hero id=about
+        div class=hero-content
+            div class=badge
+                span class=badge-dotspan Available for Engineering Opportunities
+            div
+            h1Computer Science Student & span class=gradient-textSoftware Engineerspanh1
+            pSpecializing in graph algorithms, full-stack web applications, and interactive visualization tools. Passionate about scalable architecture and efficient problem solving.p
+            div class=hero-btns
+                a href=#projects class=btn-primaryView Projects i class=fa-solid fa-arrow-rightia
+                a href=httpsgithub.comVenkateshPadam target=_blank class=btn-secondaryi class=fa-brands fa-githubi GitHub Profilea
+            div
+        div
+
+        div class=hero-graphic
+            div class=window-header
+                div class=dot dot-reddiv
+                div class=dot dot-yellowdiv
+                div class=dot dot-greendiv
+            div
+            precodespan class=code-keywordconstspan span class=code-vardeveloperspan = {
+  name span class=code-string'Venkatesh Padam'span,
+  role span class=code-string'CS Undergraduate'span,
+  passions [span class=code-string'Graph Algorithms'span, span class=code-string'Web Dev'span],
+  status span class=code-string'Building Graphbot Studio'span,
+  getGoal span class=code-funcfunctionspan() {
+    span class=code-keywordreturnspan span class=code-string`Solving complex computational challenges.`span;
+  }
+};codepre
+        div
+    section
+
+    !-- Projects Section --
+    section id=projects
+        h2 class=section-titleFeatured Workh2
+
+        !-- Featured Spotlight Graphbot Studio --
+        div class=featured-project
+            div class=featured-tagSpotlightdiv
+            div class=featured-info
+                h3Graphbot Studioh3
+                pAn interactive graph visualization and algorithm simulation workspace designed to help developers and students execute graph algorithms (BFS, DFS, Dijkstra) in real time with interactive nodes.p
+                div class=tech-tags
+                    span class=tagJavaScriptspan
+                    span class=tagCanvas APIspan
+                    span class=tagGraph Theoryspan
+                    span class=tagAlgorithmsspan
+                div
+                div class=hero-btns
+                    a href=httpsgithub.comVenkateshPadamgraphbot-studiotreemain target=_blank class=btn-primary
+                        i class=fa-brands fa-githubi View Repository
+                    a
+                div
+            div
+            div class=project-preview-card
+                div class=node-graph-mock
+                    i class=fa-solid fa-diagram-project style=font-size 3.5rem; color var(--primary);i
+                div
+                div style=font-family var(--font-mono); font-size 0.8rem; color var(--text-muted);
+                    &gt; Status Active Projectbr
+                    &gt; Interactive Graph Visualizer
+                div
+            div
+        div
+
+        !-- Secondary Projects Grid --
+        div class=projects-grid
+            div class=card
+                div
+                    div class=card-header
+                        i class=fa-solid fa-code card-iconi
+                        div class=card-links
+                            a href=httpsgithub.comVenkateshPadam target=_blanki class=fa-brands fa-githubia
+                        div
+                    div
+                    h4Algorithm Visualizerh4
+                    pWeb-based application for stepping through sorting and searching algorithms with interactive array bars and real-time step counters.p
+                div
+                div class=tech-tags
+                    span class=tagReactspan
+                    span class=tagData Structuresspan
+                div
+            div
+
+            div class=card
+                div
+                    div class=card-header
+                        i class=fa-solid fa-database card-iconi
+                        div class=card-links
+                            a href=httpsgithub.comVenkateshPadam target=_blanki class=fa-brands fa-githubia
+                        div
+                    div
+                    h4Full-Stack Database Portalh4
+                    pRobust management platform with secure user authentication, CRUD operations, and optimized database queries.p
+                div
+                div class=tech-tags
+                    span class=tagNode.jsspan
+                    span class=tagExpressspan
+                    span class=tagMongoDBspan
+                div
+            div
+
+            div class=card
+                div
+                    div class=card-header
+                        i class=fa-solid fa-terminal card-iconi
+                        div class=card-links
+                            a href=httpsgithub.comVenkateshPadam target=_blanki class=fa-brands fa-githubia
+                        div
+                    div
+                    h4Developer CLI Toolkith4
+                    pLightweight command-line tool built to automate developer workflows, project initialization, and Git automation tasks.p
+                div
+                div class=tech-tags
+                    span class=tagPythonspan
+                    span class=tagCLIspan
+                div
+            div
+        div
+    section
+
+    !-- Skills Section --
+    section id=skills
+        h2 class=section-titleTechnical Skillsh2
+        div class=skills-grid
+            div class=skill-category
+                h4i class=fa-solid fa-codei Languagesh4
+                ul class=skill-list
+                    li class=skill-itemC  C++li
+                    li class=skill-itemJavali
+                    li class=skill-itemPythonli
+                    li class=skill-itemJavaScript (ES6+)li
+                    li class=skill-itemHTML5 & CSS3li
+                ul
+            div
+
+            div class=skill-category
+                h4i class=fa-solid fa-layer-groupi Frameworks & Webh4
+                ul class=skill-list
+                    li class=skill-itemReact.jsli
+                    li class=skill-itemNode.js  Expressli
+                    li class=skill-itemRESTful APIsli
+                    li class=skill-itemTailwind CSSli
+                ul
+            div
+
+            div class=skill-category
+                h4i class=fa-solid fa-braini Core CSh4
+                ul class=skill-list
+                    li class=skill-itemData Structures & Algoli
+                    li class=skill-itemGit & GitHubli
+                    li class=skill-itemLinux  Shell Scriptingli
+                    li class=skill-itemObject-Oriented Designli
+                ul
+            div
+        div
+    section
+
+    !-- Education Timeline --
+    section id=timeline
+        h2 class=section-titleEducation & Milestonesh2
+        div class=timeline
+            div class=timeline-item
+                div class=timeline-date2023 — PRESENTdiv
+                div class=timeline-titleB.Tech in Computer Science & Engineeringdiv
+                div class=timeline-subtitleUndergraduate Degreediv
+                pFocusing on Core Data Structures, Algorithms, Software Engineering, Database Management Systems, and Web Technologies.p
+            div
+            div class=timeline-item
+                div class=timeline-dateFEATURED PROJECTdiv
+                div class=timeline-titleCreator & Maintainerdiv
+                div class=timeline-subtitleGraphbot Studiodiv
+                pEngineered an interactive graph visualization engine allowing real-time algorithm execution and graph theory simulations.p
+            div
+        div
+    section
+
+    !-- Contact & Footer --
+    footer id=contact
+        div class=social-links
+            a href=httpsgithub.comVenkateshPadam target=_blank title=GitHubi class=fa-brands fa-githubia
+            a href=# target=_blank title=LinkedIni class=fa-brands fa-linkedinia
+            a href=# target=_blank title=Twitteri class=fa-brands fa-x-twitteria
+            a href=mailtovenkateshpadam69@gmail.com title=Emaili class=fa-solid fa-envelopeia
+        div
+        pDirect Email a href=mailtovenkateshpadam69@gmail.com style=color var(--primary); text-decoration none;venkateshpadam69@gmail.comap
+        p style=margin-top 1rem;&copy; Venkatesh Padam. All rights reserved.p
+    footer
+
+    !-- Canvas Node Particle Script --
+    script
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () = {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random()  width;
+                this.y = Math.random()  height;
+                this.vx = (Math.random() - 0.5)  0.6;
+                this.vy = (Math.random() - 0.5)  0.6;
+                this.radius = Math.random()  1.5 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x  0  this.x  width) this.vx = -1;
+                if (this.y  0  this.y  height) this.vy = -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI  2);
+                ctx.fillStyle = 'rgba(165, 180, 252, 0.3)';
+                ctx.fill();
+            }
+        }
+
+        let particles = [];
+        function init() {
+            particles = [];
+            const particleCount = Math.floor(width  18);
+            for (let i = 0; i  particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i  particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j  particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx  dx + dy  dy);
+
+                    if (dist  120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.15 - dist  800})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    script
+body
+html
